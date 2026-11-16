@@ -1,40 +1,40 @@
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 
-const theme = ref('dark');
+const STORAGE_KEY = 'theme';
+const systemDark = window.matchMedia('(prefers-color-scheme: dark)');
 
-function applyTheme(value) {
-    const root = document.documentElement;
-    root.classList.remove('dark', 'light');
-    root.classList.add(value);
+function storedChoice() {
+    try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        return stored === 'light' || stored === 'dark' ? stored : null;
+    } catch {
+        return null;
+    }
 }
 
-export function initTheme() {
-    let initial = 'dark';
-    try {
-        const stored = localStorage.getItem('theme');
-        if (stored === 'light' || stored === 'dark') {
-            initial = stored;
-        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-            initial = 'light';
-        }
-    } catch (e) {
-        // ignore
-    }
-    theme.value = initial;
-    applyTheme(initial);
+// The visitor's system setting wins until they pick a theme themselves.
+const theme = ref(storedChoice() ?? (systemDark.matches ? 'dark' : 'light'));
+
+function apply(value) {
+    document.documentElement.dataset.theme = value;
 }
 
-watch(theme, (value) => {
-    applyTheme(value);
-    try {
-        localStorage.setItem('theme', value);
-    } catch (e) {
-        // ignore
-    }
+apply(theme.value);
+
+systemDark.addEventListener('change', (event) => {
+    if (storedChoice()) return;
+    theme.value = event.matches ? 'dark' : 'light';
+    apply(theme.value);
 });
 
-export function toggleTheme() {
+function toggleTheme() {
     theme.value = theme.value === 'dark' ? 'light' : 'dark';
+    apply(theme.value);
+    try {
+        localStorage.setItem(STORAGE_KEY, theme.value);
+    } catch {
+        // Private mode: the choice just lasts for this visit.
+    }
 }
 
 export function useTheme() {

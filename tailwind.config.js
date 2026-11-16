@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  darkMode: 'class',
+  darkMode: ['selector', '[data-theme="dark"]'],
   content: [
     "./index.html",
     "./src/**/*.{vue,js,ts,jsx,tsx}",
@@ -8,16 +8,20 @@ export default {
   theme: {
     extend: {
       colors: {
-        gray: {
-          200: 'var(--gray-200)',
-          300: 'var(--gray-300)',
-          400: 'var(--gray-400)',
-          600: 'var(--gray-600)',
-        },
+        paper: 'var(--paper)',
+        wash: 'var(--wash)',
+        ink: 'var(--ink)',
+        muted: 'var(--muted)',
+        rule: 'var(--rule)',
         accent: 'var(--accent)',
-        surface: 'var(--surface)',
-        'surface-alt': 'var(--surface-alt)',
-        selection: 'var(--selection)',
+      },
+      fontFamily: {
+        serif: ['Newsreader', 'Iowan Old Style', 'Georgia', 'serif'],
+        sans: ['"IBM Plex Sans"', 'system-ui', 'sans-serif'],
+        mono: ['"IBM Plex Mono"', 'ui-monospace', 'monospace'],
+      },
+      maxWidth: {
+        page: '68rem',
       },
     },
   },

@@ -2,70 +2,95 @@
 @tailwind components;
 @tailwind utilities;
 
-:root,
-:root.light {
-    --surface: #f5f1e8;
-    --surface-alt: #ebe5d4;
-    --accent: #b4881a;
-    --selection: #1e6ea6;
-    --gray-200: #1f2937;
-    --gray-300: #334155;
-    --gray-400: #475569;
-    --gray-600: #94a3b8;
+:root {
+    --paper: #f6f3ec;
+    --wash: #ece8dd;
+    --ink: #1b1b18;
+    --muted: #5e5c54;
+    --rule: #d8d3c5;
+    --accent: #0f47b8;
+    color-scheme: light;
 }
 
-:root.dark {
-    --surface: #051c36;
-    --surface-alt: #0a2a4a;
-    --accent: #FFF7AE;
-    --selection: #1e6ea6;
-    --gray-200: #e5e7eb;
-    --gray-300: #d1d5db;
-    --gray-400: #9ca3af;
-    --gray-600: #4b5563;
+:root[data-theme='dark'] {
+    --paper: #121311;
+    --wash: #1c1d1a;
+    --ink: #eceae2;
+    --muted: #a3a197;
+    --rule: #2e2f2a;
+    --accent: #78a6ff;
+    color-scheme: dark;
 }
 
-body {
-    background-color: var(--surface);
-    color: var(--gray-300);
-    transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-::selection {
-    background-color: var(--selection);
-    color: #ffffff;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        filter: blur(10px);
-        transform: translateX(10px);
+@layer base {
+    html {
+        scroll-padding-top: 5rem;
+        -webkit-text-size-adjust: 100%;
     }
-    to {
-        opacity: 1;
-        filter: blur(0);
-        transform: translateX(0);
+
+    body {
+        @apply bg-paper font-sans text-ink antialiased;
+        font-size: 1.0625rem;
+        line-height: 1.65;
+    }
+
+    ::selection {
+        background-color: var(--accent);
+        color: var(--paper);
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+        border-radius: 2px;
     }
 }
 
-.animate-fade-in {
-    animation: fadeIn 0.8s ease-out forwards;
+@layer components {
+    /* Inline text link: ink text, accent underline that thickens on hover. */
+    .link {
+        text-decoration: underline;
+        text-decoration-color: var(--accent);
+        text-decoration-thickness: 1px;
+        text-underline-offset: 0.22em;
+        transition: color 0.15s ease, text-decoration-thickness 0.15s ease;
+    }
+
+    .link:hover {
+        color: var(--accent);
+        text-decoration-thickness: 2px;
+    }
+
+    /* Small monospace label used for dates, section names and tags. */
+    .label {
+        @apply font-mono text-xs uppercase text-muted;
+        letter-spacing: 0.08em;
+    }
+
+    .kbd {
+        @apply inline-flex h-5 min-w-5 items-center justify-center rounded border border-rule px-1 font-mono text-[0.6875rem] leading-none text-muted;
+    }
+}
+
+.reveal {
     opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-.delay-1 {
-    animation-delay: 0.1s;
+.reveal.is-visible {
+    opacity: 1;
+    transform: none;
 }
 
-.delay-2 {
-    animation-delay: 0.3s;
-}
+@media (prefers-reduced-motion: reduce) {
+    .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
 
-.delay-3 {
-    animation-delay: 0.4s;
-}
-
-.delay-4 {
-    animation-delay: 0.7s;
+    html {
+        scroll-behavior: auto;
+    }
 }
