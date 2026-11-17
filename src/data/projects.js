@@ -32,6 +32,7 @@ export const projects = [
             'Vue.js',
             'Nuxt',
             'LLMs and retrieval-augmented generation',
+            'Claude Code',
         ],
         links: [],
     },
