@@ -18,7 +18,7 @@ export function siteAsMarkdown() {
     const out = [];
     const push = (...lines) => out.push(...lines);
 
-    push(`# ${profile.name}`, '', profile.headline, '', profile.availability, '', `Based in ${profile.location}, and open to relocating. ${profile.work_authorization}`, '');
+    push(`# ${profile.name}`, '', profile.headline, '', profile.availability, '', `Based in ${profile.location} and open to relocating. ${profile.work_authorization}`, '');
     push(
         [
             ...profile.links.map((link) => `[${link.label}](${link.url})`),

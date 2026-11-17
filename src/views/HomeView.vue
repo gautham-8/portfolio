@@ -32,7 +32,7 @@ import { featuredProjects, projects } from '../data/projects';
             <span>
                 {{ profile.availability }}
                 <span class="mt-2 block text-[0.9375rem] text-muted">
-                    Based in {{ profile.location }}, and open to relocating. {{ profile.work_authorization }}
+                    Based in {{ profile.location }} and open to relocating. {{ profile.work_authorization }}
                 </span>
             </span>
         </p>
